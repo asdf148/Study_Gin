@@ -2,6 +2,7 @@ package main
 
 import (
 	"io"
+	"net/http"
 	"os"
 
 	"asdf148.com/Study_Gin/controller"
@@ -35,7 +36,12 @@ func main() {
 	})
 
 	server.POST("/novel", func(ctx *gin.Context) {
-		ctx.JSON(200, novelController.Save(ctx))
+		err := novelController.Save(ctx)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		} else {
+			ctx.JSON(http.StatusOK, gin.H{"message": "novel Input is Valid!"})
+		}
 	})
 
 	server.Run() // listen and serve on 0.0.0.0:8080

@@ -1,0 +1,15 @@
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /posts                    --> main.main.func1 (5 handlers)
+[GIN-debug] POST   /novel                    --> main.main.func2 (5 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
+[GIN-debug] Listening and serving HTTP on :8080
+::1 - [30 Nov 21 19:37 KST] POST /novel 400 698.084µs 
+::1 - [30 Nov 21 19:38 KST] POST /novel 400 326.875µs 
+::1 - [30 Nov 21 19:38 KST] POST /novel 400 314.167µs 
+::1 - [30 Nov 21 19:38 KST] POST /novel 200 483.333µs 
+::1 - [30 Nov 21 19:38 KST] GET /posts 200 215.75µs 
