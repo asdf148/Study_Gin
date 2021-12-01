@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"net/http"
+
 	"asdf148.com/Study_Gin/entity"
 	"asdf148.com/Study_Gin/service"
 	"asdf148.com/Study_Gin/validators"
@@ -11,6 +13,7 @@ import (
 type NovelController interface {
 	Save(ctx *gin.Context) error
 	FindAll() []entity.Novel
+	ShowAll(ctx *gin.Context)
 }
 
 type novelController struct {
@@ -43,4 +46,13 @@ func (c *novelController) Save(ctx *gin.Context) error {
 
 func (c *novelController) FindAll() []entity.Novel {
 	return c.service.FindAll()
+}
+
+func (c *novelController) ShowAll(ctx *gin.Context) {
+	novels := c.service.FindAll()
+	data := gin.H{
+		"title":  "Novel Page",
+		"novels": novels,
+	}
+	ctx.HTML(http.StatusOK, "index.html", data)
 }

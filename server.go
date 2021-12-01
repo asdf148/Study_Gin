@@ -28,21 +28,33 @@ func main() {
 
 	server := gin.New()
 
+	server.Static("/css", "./templates/css")
+
+	server.LoadHTMLGlob("templates/*.html")
+
 	server.Use(gin.Recovery(), middleware.Logger(),
 		middleware.BasicAuth(), gindump.Dump())
 
-	server.GET("/posts", func(ctx *gin.Context) {
-		ctx.JSON(200, novelController.FindAll())
-	})
+	apiRoutes := server.Group("/api")
+	{
+		apiRoutes.GET("/posts", func(ctx *gin.Context) {
+			ctx.JSON(200, novelController.FindAll())
+		})
 
-	server.POST("/novel", func(ctx *gin.Context) {
-		err := novelController.Save(ctx)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		} else {
-			ctx.JSON(http.StatusOK, gin.H{"message": "novel Input is Valid!"})
-		}
-	})
+		apiRoutes.POST("/novel", func(ctx *gin.Context) {
+			err := novelController.Save(ctx)
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{"message": "novel Input is Valid!"})
+			}
+		})
+	}
+
+	viewRoutes := server.Group("/view")
+	{
+		viewRoutes.GET("/novels", novelController.ShowAll)
+	}
 
 	server.Run() // listen and serve on 0.0.0.0:8080
 }
